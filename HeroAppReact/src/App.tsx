@@ -1,4 +1,5 @@
 import "./App.css";
+import CharacterCaousel from "./Components/HeroComponent";
 import HeroList from "./Components/HeroComponent";
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
       </p> */}
       <div>
         <h1>HERO LIST</h1>
-        <HeroList />
+        <CharacterCaousel />
       </div>
     </>
   );
