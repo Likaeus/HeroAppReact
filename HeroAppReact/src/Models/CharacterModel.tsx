@@ -11,6 +11,7 @@ interface Character {
     data: Buffer | null;
     contentType: string;
   };
+  imageUrl?: string;
 }
 
 export default Character;

@@ -1,6 +1,5 @@
 import "./App.css";
 import CharacterCaousel from "./Components/HeroComponent";
-import HeroList from "./Components/HeroComponent";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -28,7 +27,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p> */}
       <div>
-        <h1>HERO LIST</h1>
+        <h1>EPIC ENCLAVE</h1>
         <CharacterCaousel />
       </div>
     </>

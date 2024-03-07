@@ -11,21 +11,11 @@ const CharacterCarousel: React.FC = () => {
     const fetchCharacters = async () => {
       try {
         const response = await out.getAllHeroCards();
-        console.log("Response data:", response.data);
         const characterData = response.data;
 
-        const formattedCharacters = characterData
-          .map((character: Character) => ({
-            id: typeof character._id === "string",
-            name: character.Name,
-            details: character.Details,
-            image: character.Image
-              ? urlifyImage(character.Image.data, character.Image.contentType)
-              : null,
-          }))
-          .filter((character: { image: null }) => character.image !== null);
-        setCharacters(formattedCharacters);
-        console.log("Formatted characters:", formattedCharacters);
+        const lastFourCharacters = characterData.slice(-4);
+
+        setCharacters(lastFourCharacters);
       } catch (error) {
         console.error("Error fetching characters:", error);
       }
@@ -33,24 +23,15 @@ const CharacterCarousel: React.FC = () => {
 
     fetchCharacters();
   }, []);
-
-  const urlifyImage = (imageData: Buffer | null, contentType: string) => {
-    if (!imageData) {
-      // Return an empty string instead of null
-      return "";
-    }
-    // Convert Buffer to string before encoding
-    const imageString = imageData.toString("base64");
-    return `data:${contentType};base64,${imageString}`;
-  };
+  console.log(characters);
 
   const handleCharacterClick = (index: number) => {
     setActiveIndex(index);
   };
-  console.log("Characters:", characters);
+
   return (
     <div className="character-carousel">
-      <h2 className="carousel-title">Lista de Personajes</h2>
+      <h2 className="carousel-title">Últimos Personajes</h2>
       <div className="owl-carousel custom-carousel owl-theme">
         {characters.map((character, index) => (
           <div
@@ -59,7 +40,7 @@ const CharacterCarousel: React.FC = () => {
             onClick={() => handleCharacterClick(index)}
           >
             <div className="item-desc">
-              <h3>{character.Name}</h3>
+              <h3 className="name">{character.Name}</h3>
               {character.Details && (
                 <>
                   <p>Poderes: {character.Details.Powers}</p>
@@ -69,10 +50,9 @@ const CharacterCarousel: React.FC = () => {
             </div>
             {character.Image && (
               <img
-                src={urlifyImage(
-                  character.Image.data,
-                  character.Image.contentType
-                )}
+                src={`${import.meta.env.VITE_APIURL}/api/image/${
+                  character._id
+                }`}
                 alt={character.Name}
               />
             )}
