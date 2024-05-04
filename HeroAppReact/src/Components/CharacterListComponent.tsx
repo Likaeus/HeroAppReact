@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/CharacterListStyles.css";
-import { Link } from "react-router-dom";
 import out from "../Services/heroService.tsx";
 import Character from "../Models/CharacterModel";
 
-const CharacterList: React.FC = () => {
+interface CharacterListProps {
+  onCharacterSelect: (character: Character) => void;
+}
+
+const CharacterList: React.FC<CharacterListProps> = ({ onCharacterSelect }) => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
@@ -57,10 +60,10 @@ const CharacterList: React.FC = () => {
       <div className="character-list">
         <div className="character-list-container">
           {filteredCharacters.map((character) => (
-            <Link
-              to={`/character/${character._id}`}
-              key={character._id}
+            <div
               className="character-item"
+              key={character._id}
+              onClick={() => onCharacterSelect(character)}
             >
               <img
                 src={`${import.meta.env.VITE_APIURL}/api/image/${
@@ -70,7 +73,7 @@ const CharacterList: React.FC = () => {
                 className="character-image"
               />
               <p className="character-name">{character.Name}</p>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

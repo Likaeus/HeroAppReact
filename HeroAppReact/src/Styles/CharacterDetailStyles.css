@@ -1,0 +1,48 @@
+/* CharacterDetailStyles.css */
+.character-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Ajusta según la necesidad de diseño */
+  max-height: 750px;
+  background: linear-gradient(#461111 50%, #262727);
+  color: white;
+  padding: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0.25, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  margin-bottom: 30px; /* Espacio entre este y otros componentes */
+  margin-top: 10%; /* Aumenta el espacio del top para separar del navbar */
+  border-radius: 10px;
+}
+
+.character-detail-image {
+  width: 80%; /* Hace las imágenes más grandes */
+  height: 300px; /* Altura fija para todas las imágenes */
+  margin-bottom: 15px; /* Espacio entre la imagen y el texto debajo */
+  overflow: hidden; /* Oculta partes de la imagen que excedan las dimensiones */
+  box-shadow: #262727;
+}
+
+.character-detail-image img {
+  width: 90%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionar */
+  border-radius: 5px; /* Asegura que los bordes de la imagen sean redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); /* Añade un poco de sombra para mejor visualización */
+}
+
+.character-detail-content {
+  padding: 10px;
+  text-align: center;
+  width: 80%; /* Ajuste para alinear el texto según el tamaño de la imagen */
+}
+
+.character-detail-title {
+  font-size: 2em; /* Aumenta el tamaño del título para mejor visualización */
+  margin-bottom: 0.5em;
+}
+
+.character-detail-description {
+  font-size: 1em; /* Aumenta el tamaño de la descripción */
+}
+
+/* Asegúrate de que este archivo CSS solo se importa en el CharacterDetailComponent */

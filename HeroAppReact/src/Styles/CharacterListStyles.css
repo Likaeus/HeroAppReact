@@ -1,24 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Inconsolata:700");
 
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  background: #252525;
-} */
-
 .bar-container {
   top: 10px;
 }
+
 .character-list {
   width: 100%;
   margin-top: 30px;
@@ -153,15 +138,29 @@ body {
   padding-top: 65px;
   margin-left: 10px;
   align-items: center;
-}
-.character-list-container {
-  display: flex;
-  flex-direction: column;
-  position: relative; /* Agrega posición relativa para que los elementos absolutos se posicionen correctamente */
-  padding-top: 30px; /* Ajusta el espacio para el search bar */
-  min-height: 500px; /* Altura mínima para evitar que la lista se colapse */
+  position: sticky;
+  top: 0; /* Mantén el título en la parte superior */
+  background-color: #252525; /* Agrega un fondo para que se destaque */
+  z-index: 3; /* Asegúrate de que esté por encima del resto del contenido */
 }
 
+.character-list-container {
+  /* background-color: #f9f9f9; */
+  display: flex;
+  flex-direction: column;
+  margin-top: 45px;
+  position: relative; /* Agrega posición relativa para que los elementos absolutos se posicionen correctamente */
+  padding-top: 40px; /* Ajusta el espacio para el search bar */
+  min-height: 500px; /* Altura mínima para evitar que la lista se colapse */
+  max-height: 500px;
+  overflow-y: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+  overflow-x: hidden;
+}
+.character-list-container::-webkit-scrollbar {
+  display: none; /* Ocultar la barra de desplazamiento en navegadores que usen WebKit */
+}
 .character-item {
   width: 100%;
   margin-bottom: 20px;
@@ -177,6 +176,10 @@ body {
 .character-item:hover {
   transform: translateY(-5px);
 }
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease-out; /* Ajusta la duración y el efecto de transición según tus preferencias */
+}
 
 .character-image {
   width: 90px;
@@ -191,4 +194,19 @@ body {
   font-weight: bold;
   color: #333;
   flex-grow: 1;
+}
+.character-carousel {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-header {
+  position: sticky; /* Fija el contenedor al desplazarse */
+  top: 0; /* Lo sitúa en la parte superior */
+  background-color: #fff; /* Agrega cualquier estilo de fondo necesario */
+  z-index: 100; /* Ajusta según la superposición necesaria */
+}
+
+.search-container {
+  margin-top: 10px; /* Ajusta el espacio entre el título y el cuadro de búsqueda */
 }

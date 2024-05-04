@@ -1,0 +1,24 @@
+.main-container {
+  display: flex;
+  align-items: stretch; /* Asegura que ambos hijos llenen el espacio en altura */
+  padding-top: 15px; /* Añade espacio en la parte superior */
+  overflow-y: hidden;
+}
+
+.left-container,
+.right-container {
+  flex: 1; /* Asigna el mismo espacio a cada contenedor */
+  min-height: 600px; /* O el mínimo que consideres adecuado */
+  overflow: auto; /* Permite el desplazamiento si el contenido excede la altura del contenedor */
+}
+
+.right-container {
+  margin-left: 300px; /* Ajusta según sea necesario para equilibrar el espacio */
+  width: 400px;
+}
+
+.character-card,
+.character-list {
+  width: 100%; /* Ocupan todo el ancho de sus respectivos contenedores */
+  height: 100%; /* Ocupan toda la altura */
+}
