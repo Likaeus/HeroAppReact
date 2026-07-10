@@ -1,17 +1,14 @@
-import { Buffer } from "buffer";
 interface Character {
-  _id: string;
-  Name: string;
-  Description: string;
-  Details: {
-    Powers: string;
-    Weakness: string;
+  id: string;
+  name: string;
+  description: string;
+  details: {
+    powers: string;
+    weakness: string;
   };
-  Image: {
-    data: Buffer | null;
-    contentType: string;
-  };
-  imageUrl?: string;
+  imageUrl: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default Character;

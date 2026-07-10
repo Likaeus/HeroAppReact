@@ -1,48 +1,5 @@
-/* CharacterDetailStyles.css */
-.character-detail-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%; /* Ajusta según la necesidad de diseño */
-  max-height: 750px;
-  background: linear-gradient(#461111 50%, #262727);
-  color: white;
-  padding: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0.25, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  margin-bottom: 30px; /* Espacio entre este y otros componentes */
-  margin-top: 10%; /* Aumenta el espacio del top para separar del navbar */
-  border-radius: 10px;
-}
-
-.character-detail-image {
-  width: 80%; /* Hace las imágenes más grandes */
-  height: 300px; /* Altura fija para todas las imágenes */
-  margin-bottom: 15px; /* Espacio entre la imagen y el texto debajo */
-  overflow: hidden; /* Oculta partes de la imagen que excedan las dimensiones */
-  box-shadow: #262727;
-}
-
-.character-detail-image img {
-  width: 90%;
-  height: 100%;
-  object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionar */
-  border-radius: 5px; /* Asegura que los bordes de la imagen sean redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); /* Añade un poco de sombra para mejor visualización */
-}
-
-.character-detail-content {
-  padding: 10px;
-  text-align: center;
-  width: 80%; /* Ajuste para alinear el texto según el tamaño de la imagen */
-}
-
-.character-detail-title {
-  font-size: 2em; /* Aumenta el tamaño del título para mejor visualización */
-  margin-bottom: 0.5em;
-}
-
-.character-detail-description {
-  font-size: 1em; /* Aumenta el tamaño de la descripción */
-}
-
-/* Asegúrate de que este archivo CSS solo se importa en el CharacterDetailComponent */
+.character-detail { position: sticky; top: 20px; overflow: hidden; }
+.detail-art { height: 390px; position: relative; overflow: hidden; background: var(--panel-raised); }.detail-art::after { content: ""; position: absolute; inset: 30% 0 0; background: linear-gradient(transparent, rgba(13,12,18,.96)); }.detail-art img { width: 100%; height: 100%; object-fit: cover; }.detail-title { position: absolute; z-index: 1; left: 32px; right: 32px; bottom: 23px; }.detail-title .eyebrow { margin-bottom: 6px; }.detail-title h2 { margin: 0; font-size: clamp(2.1rem, 4vw, 3.4rem); }
+.detail-body { padding: 30px 32px; }.detail-body p { color: #c0bac8; line-height: 1.7; font-size: .9rem; }.detail-label { display: block; margin-bottom: 7px; color: var(--amber); text-transform: uppercase; letter-spacing: .14em; font-size: .61rem; font-weight: 700; }.detail-traits { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }.detail-traits section { display: flex; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; }.detail-traits p { margin: 0; font-size: .78rem; line-height: 1.45; }.trait-icon { color: var(--amber); }.trait-icon.weakness { color: var(--violet); }
+.empty-detail { min-height: 590px; padding: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }.empty-detail h2 { font-size: 2.3rem; margin-bottom: 14px; }.empty-detail p { max-width: 380px; color: var(--muted); line-height: 1.7; }.empty-sigil { width: 105px; height: 105px; margin-bottom: 35px; display: grid; place-items: center; border: 1px solid rgba(233,173,98,.25); border-radius: 50%; color: var(--amber); font-size: 2.5rem; box-shadow: 0 0 50px rgba(233,173,98,.08); }
+@media (max-width: 600px) { .detail-art { height: 330px; }.detail-body { padding: 24px 20px; }.detail-title { left: 20px; right: 20px; }.detail-traits { grid-template-columns: 1fr; }.empty-detail { min-height: 430px; padding: 35px 20px; } }

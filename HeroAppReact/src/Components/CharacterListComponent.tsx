@@ -1,84 +1,44 @@
-import React, { useEffect, useState } from "react";
-import "../Styles/CharacterListStyles.css";
-import out from "../Services/heroService.tsx";
+import { useEffect, useState } from "react";
+import HeroService from "../Services/heroService";
 import Character from "../Models/CharacterModel";
+import HeroImage from "./HeroImage";
+import "../Styles/CharacterListStyles.css";
 
-interface CharacterListProps {
-  onCharacterSelect: (character: Character) => void;
-}
+interface Props { onCharacterSelect: (character: Character) => void; selectedId?: string }
 
-const CharacterList: React.FC<CharacterListProps> = ({ onCharacterSelect }) => {
+const CharacterList = ({ onCharacterSelect, selectedId }: Props) => {
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCharacters = async () => {
+    let active = true;
+    const timeout = window.setTimeout(async () => {
+      setLoading(true); setError(null);
       try {
-        const response = await out.getAllHeroCards();
-        setCharacters(response.data);
-      } catch (error) {
-        console.error("Error fetching characters:", error);
-      }
-    };
+        const response = await HeroService.list({ limit: 100, search: searchTerm.trim() || undefined });
+        if (active) setCharacters(response.data.data);
+      } catch { if (active) setError("No pudimos abrir el archivo de personajes."); }
+      finally { if (active) setLoading(false); }
+    }, searchTerm ? 300 : 0);
+    return () => { active = false; window.clearTimeout(timeout); };
+  }, [searchTerm]);
 
-    fetchCharacters();
-  }, []);
-
-  const handleSearchTermChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredCharacters = characters.filter((character) =>
-    character.Name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  useEffect(() => {
-    // Mostrar el campo de búsqueda después de la carga inicial de los personajes
-    setIsSearchVisible(true);
-  }, []);
-
-  return (
-    <div>
-      <div className="title-container">
-        <h2 className="title">Lista de Personajes</h2>
-      </div>
-      <div className="bar-container">
-        <div className="container">
-          {isSearchVisible && (
-            <input
-              type="text"
-              placeholder="Buscar personaje..."
-              value={searchTerm}
-              onChange={handleSearchTermChange}
-            />
-          )}
-          <div className="search"></div>
-        </div>
-      </div>
-      <div className="character-list">
-        <div className="character-list-container">
-          {filteredCharacters.map((character) => (
-            <div
-              className="character-item"
-              key={character._id}
-              onClick={() => onCharacterSelect(character)}
-            >
-              <img
-                src={`${import.meta.env.VITE_APIURL}/api/image/${
-                  character._id
-                }`}
-                alt={character.Name}
-                className="character-image"
-              />
-              <p className="character-name">{character.Name}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+  return <div className="character-browser surface-card">
+    <div className="browser-toolbar"><div><span className="eyebrow">Explorar</span><h2>El archivo</h2></div><label className="search-field"><span aria-hidden="true">⌕</span><input type="search" aria-label="Buscar personaje" placeholder="Buscar por nombre…" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} /></label></div>
+    <div className="character-list-container" aria-live="polite">
+      {loading && [1, 2, 3, 4].map((item) => <div className="list-skeleton" key={item}><span /><div><i /><i /></div></div>)}
+      {!loading && error && <div className="list-message"><span>◇</span><p>{error}</p></div>}
+      {!loading && !error && !characters.length && <div className="list-message"><span>⌕</span><p>No encontramos personajes con ese nombre.</p></div>}
+      {!loading && !error && characters.map((character) => {
+        return <button type="button" className={`character-item ${selectedId === character.id ? "selected" : ""}`} key={character.id} onClick={() => onCharacterSelect(character)}>
+          <span className="list-portrait"><HeroImage hero={character} alt="" fallback={<>✦</>} /></span>
+          <span className="list-copy"><strong>{character.name}</strong><small>{character.details.powers}</small></span><span className="list-arrow">→</span>
+        </button>;
+      })}
     </div>
-  );
+  </div>;
 };
 
 export default CharacterList;

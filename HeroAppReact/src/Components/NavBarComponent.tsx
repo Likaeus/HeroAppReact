@@ -1,85 +1,37 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { useAuth } from "../Context/useAuth";
 import "../Styles/NavBarComponentStyles.css";
-import { useNavigate } from "react-router-dom";
 
-const NavBar: React.FC = () => {
-  const navigate = useNavigate();
-
-  const [scrolled, setScrolled] = useState(false);
-  const [dropped, setDropped] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY >= 100);
-    };
-
-    const handleMenuChange = () => {
-      const menuButtonChecked = (
-        document.getElementById("menuButton") as HTMLInputElement
-      )?.checked;
-      setDropped(menuButtonChecked);
-    };
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropped && (event.target as Element).id !== "menuButton") {
-        setDropped(false);
-        (document.getElementById("menuButton") as HTMLInputElement).checked =
-          false;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    document
-      .getElementById("menuButton")
-      ?.addEventListener("change", handleMenuChange);
-    document.body.addEventListener("click", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document
-        .getElementById("menuButton")
-        ?.removeEventListener("change", handleMenuChange);
-      document.body.removeEventListener("click", handleClickOutside);
-    };
-  }, [dropped]);
+const NavBar = () => {
+  const [open, setOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const close = () => setOpen(false);
 
   return (
-    <div>
-      <div className={`fixed-nav-bar ${scrolled ? "scrolled" : ""}`}>
-        <div className="logo" onClick={() => navigate("/")}>
-          <span>EPIC</span>ENCLAVE
-        </div>
-        <input type="checkbox" id="menuButton" />
-        <label htmlFor="menuButton" className="menu-button-label">
-          <div className="white-bar"></div>
-          <div className="white-bar"></div>
-          <div className="white-bar"></div>
-          <div className="white-bar"></div>
-        </label>
-      </div>
-      <div
-        className={`the-bass ${scrolled ? "scrolled" : ""} ${
-          dropped ? "dropped" : ""
-        }`}
-      >
-        <div
-          className="rela-block drop-down-container"
-          onClick={() => navigate("/")}
-        >
-          <div className="drop-down-item">
-            <span>Carousel</span>
+    <header className="site-header">
+      <nav className="nav-shell" aria-label="Navegación principal">
+        <Link to="/" className="brand" onClick={close} aria-label="Epic Enclave, inicio">
+          <span className="brand-mark">E</span><span><strong>EPIC</strong> ENCLAVE<small>Archivo de personajes</small></span>
+        </Link>
+        <button className="nav-toggle" aria-label="Abrir menú" aria-expanded={open} onClick={() => setOpen(!open)}><span /><span /></button>
+        <div className={`nav-content ${open ? "open" : ""}`}>
+          <div className="nav-links">
+            <NavLink to="/" end onClick={close}>Descubrir</NavLink>
+            <NavLink to="/characters" onClick={close}>Personajes</NavLink>
+            <NavLink to="/gallery" onClick={close}>Galería</NavLink>
+            <span className="nav-disabled" title="Próximamente">Campañas <small>pronto</small></span>
+          </div>
+          <div className="nav-actions">
+            {isAuthenticated ? <>
+              <Link to="/create" className="nav-create" onClick={close}>＋ Crear personaje</Link>
+              <Link to="/my-creations" className="nav-my-creations" onClick={close}>Mis creaciones</Link>
+              <div className="user-menu"><span className="user-avatar">{user?.name.charAt(0).toUpperCase()}</span><span className="user-name">{user?.name}</span><button onClick={() => { logout(); close(); }}>Salir</button></div>
+            </> : <Link to="/auth" className="nav-login" onClick={close}>Entrar <span>→</span></Link>}
           </div>
         </div>
-        <div
-          className="rela-block drop-down-container"
-          onClick={() => navigate("/list")}
-        >
-          <div className="drop-down-item">
-            <span>Lista</span>
-          </div>
-        </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 
