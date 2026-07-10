@@ -20,7 +20,7 @@ const NavBar = () => {
             <NavLink to="/" end onClick={close}>Descubrir</NavLink>
             <NavLink to="/characters" onClick={close}>Personajes</NavLink>
             <NavLink to="/gallery" onClick={close}>Galería</NavLink>
-            <span className="nav-disabled" title="Próximamente">Campañas <small>pronto</small></span>
+            <NavLink to="/campaigns" onClick={close}>Campañas</NavLink>
           </div>
           <div className="nav-actions">
             {isAuthenticated ? <>

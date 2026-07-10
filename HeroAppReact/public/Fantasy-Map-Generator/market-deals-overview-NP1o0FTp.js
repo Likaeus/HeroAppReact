@@ -1,0 +1,16 @@
+import{ht as e,n as t}from"./utils-B2UIqRdZ.js";import{t as n}from"./nodeUtils-5yXISZ7m.js";var r=!1,i=0,a=`all`;function o(e){let t=Markets.get(e);if(!t){tip(`Invalid market. The selected market does not exist`,!0,`error`,5e3);return}i=e,a=`all`,n(`marketDealsFilter`).value=`all`,s(),$(`#marketDeals`).dialog({title:`${Markets.getName(t)} Market Deals`,position:{my:`right top`,at:`right bottom+10`,of:`#marketOverview`,collision:`fit`}}),r||=(n(`marketDealsRefresh`).on(`click`,s),n(`marketDealsExport`).on(`click`,h),n(`marketDealsBody`).on(`click`,e=>{let t=e.target.closest(`.marketDealParty`)?.parentElement?.dataset.id,n=pack.deals.find(e=>e.i===Number(t));if(!n)return;let r=p(n);r&&zoomTo(r.x,r.y,8,2e3)}),n(`marketDealsFilter`).on(`change`,e=>{a=e.target.value,s()}),!0)}function s(){if(!Markets.get(i)){tip(`Invalid market. The selected market does not exist`,!0,`error`,5e3);return}let e=c(i).filter(e=>{if(a===`all`)return!0;let t=d(e);return a===`local`?t.type===`burg`:t.type===`market`}),r=0,o=``;for(let t of e)r+=m(t),o+=f(t);n(`marketDealsBody`).innerHTML=o||`No market deals recorded`,n(`marketDealsFooterDeals`).innerHTML=String(e.length),n(`marketDealsFooterNet`).innerHTML=t(r),applySorting(n(`marketDealsHeader`))}function c(e){return pack.deals.filter(t=>t.sellerType===`market`&&t.seller===e||t.buyerType===`market`&&t.buyer===e)}function l(e){return e.sellerType===`market`&&e.seller===i}function u(e){return l(e)?`out`:`in`}function d(e){return l(e)?{id:e.buyer,type:e.buyerType}:{id:e.seller,type:e.sellerType}}function f(n){let r=Goods.get(n.good);if(!r)return``;let i=m(n),a=p(n),o=d(n),s=u(n),c=i>=0?`#2a6`:`#c44`,l=i>=0?`#dff0d8`:`#f2dede`;return`<div class="states marketDeal" data-id="${n.i}" data-good="${r.name}" data-direction="${s}" data-units="${e(n.units,2)}" data-counterparty="${o.type}_${a?.name}" data-income="${i}">
+      <svg data-tip="Good icon" width="1.3em" height="1.3em" class="goodIcon">
+        <circle cx="50%" cy="50%" r="42%" fill="${r.color}" stroke="${Goods.getStroke(r.color)}"/>
+        <use href="#${r.icon}" x="10%" y="10%" width="80%" height="80%"/>
+      </svg>
+      <div data-tip="Good name" class="goodName">${r.name}</div>
+      <div><span class="marketBadge" style="background:${l}; color:${c}">${s.toUpperCase()}</span></div>
+      <div class="marketDealParty pointer" data-tip="Click to zoom">
+        <div class="${o.type===`burg`?`icon-dot-circled`:`icon-store`}" style="display:inline-block; width: 0.8em; ${o.type===`market`?`font-size: 0.85em;`:``}"></div>
+        <div style="display:inline-block; width: 6.8em;">${a?.name}</div>
+      </div>
+      <div class="marketDealUnits">${e(n.units,2)}</div>
+      <div class="marketDealIncome" style="color:${c}">${t(i)}</div>
+    </div>`}function p(e){let t=d(e),n=t.type===`burg`?t.id:Markets.get(t.id)?.centerBurgId;return n&&pack.burgs[n]||null}function m(t){return e(t.units*t.price*(l(t)?1:-1),2)}function h(){if(!Markets.get(i))return;let t=c(i),n=`Id,Good,Type,Client,Units,Price,Net
+`;for(let r of t){let t=Goods.get(r.good);t&&(n+=[r.i,t.name,u(r),p(r)?.name??``,e(r.units,2),e(r.price,2),e(m(r),2)].join(`,`),n+=`
+`)}downloadFile(n,`${getFileName(`Market_${i}_Deals`)}.csv`)}var g={open:o};export{g as MarketDealsOverview};

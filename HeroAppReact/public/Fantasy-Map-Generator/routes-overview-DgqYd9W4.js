@@ -1,0 +1,34 @@
+import{ht as e}from"./utils-B2UIqRdZ.js";import{t}from"./nodeUtils-5yXISZ7m.js";import{D as n,i as r}from"./index-B7kIDgkV.js";var i=`
+  <div id="routesHeader" class="header" style="grid-template-columns: 17em 8em 8em">
+    <div data-tip="Click to sort by route name" class="sortable alphabetically" data-sortby="name">Route&nbsp;</div>
+    <div data-tip="Click to sort by route group" class="sortable alphabetically" data-sortby="group">Group&nbsp;</div>
+    <div data-tip="Click to sort by route length" class="sortable icon-sort-number-down" data-sortby="length">Length&nbsp;</div>
+  </div>
+  <div id="routesBody" class="table"></div>
+  <div id="routesFooter" class="totalLine">
+    <div data-tip="Routes number" style="margin-left: 4px">Routes:&nbsp;<span id="routesFooterNumber">0</span></div>
+    <div data-tip="Average length" style="margin-left: 12px">Average length:&nbsp;<span id="routesFooterLength">0</span></div>
+  </div>
+  <div id="routesBottom">
+    <button id="routesOverviewRefresh" data-tip="Refresh the Editor" class="icon-cw"></button>
+    <button id="routesCreateNew" data-tip="Create a new route selecting route cells" class="icon-map-pin"></button>
+    <button id="routesExport" data-tip="Save routes-related data as a text file (.csv)" class="icon-download"></button>
+    <button id="routesLockAll" data-tip="Lock or unlock all routes" class="icon-lock"></button>
+    <button id="routesRemoveAll" data-tip="Remove all unlocked routes (locked routes are kept)" class="icon-trash"></button>
+    <label for="routesSearch" data-tip="Filter by name or group" style="margin-left: 0.2em">Search: <input id="routesSearch" type="search" /></label>
+  </div>`;function a(){customization||(closeDialogs(`#routesOverview, .stable`),layerIsOn(`toggleRoutes`)||toggleRoutes(),t(`routesOverview`).innerHTML=i,c(),t(`routesOverviewRefresh`).on(`click`,c),t(`routesCreateNew`).on(`click`,s),t(`routesExport`).on(`click`,f),t(`routesLockAll`).on(`click`,h),t(`routesRemoveAll`).on(`click`,_),t(`routesSearch`).on(`input`,c),$(`#routesOverview`).dialog({title:`Routes Overview`,resizable:!1,width:fitContent(),position:{my:`right top`,at:`right-10 top+10`,of:`svg`,collision:`fit`},close:o}))}function o(){t(`routesOverview`).innerHTML=``}function s(){r.RouteCreator.open()}function c(){let r=t(`routesBody`);r.innerHTML=``;let i=``,a=pack.routes,o=t(`routesSearch`).value.toLowerCase().trim();o&&(a=a.filter(e=>{let t=(e.name||``).toLowerCase(),n=(e.group||``).toLowerCase();return t.includes(o)||n.includes(o)}));for(let t of a){if(!t.points||t.points.length<2)continue;t.name=t.name||Routes.generateName(t),t.length=t.length||Routes.getLength(t.i);let n=`${e(t.length*distanceScale)} ${distanceUnitInput.value}`;i+=`<div
+        class="states"
+        data-id="${t.i}"
+        data-name="${t.name}"
+        data-group="${t.group}"
+        data-length="${t.length}"
+      >
+        <span data-tip="Locate the route" class="icon-target"></span>
+        <div data-tip="Route name" style="width: 15em; margin-left: 0.4em;">${t.name}</div>
+        <div data-tip="Route group" style="width: 8em;">${t.group}</div>
+        <div data-tip="Route length" style="width: 6em;">${n}</div>
+        <span data-tip="Edit route" class="icon-pencil"></span>
+        <span class="locks pointer ${t.lock?`icon-lock`:`icon-lock-open inactive`}" onmouseover="showElementLockTip(event)"></span>
+        <span data-tip="Remove route" class="icon-trash-empty"></span>
+      </div>`}r.insertAdjacentHTML(`beforeend`,i),t(`routesFooterNumber`).innerHTML=`${a.length} of ${pack.routes.length}`;let s=e(n(a.map(e=>e.length))||0)||0;t(`routesFooterLength`).innerHTML=`${s*distanceScale} ${distanceUnitInput.value}`,r.querySelectorAll(`div.states`).forEach(e=>void e.on(`mouseenter`,l)),r.querySelectorAll(`div.states`).forEach(e=>void e.on(`mouseleave`,u)),r.querySelectorAll(`div > span.icon-target`).forEach(e=>void e.on(`click`,d)),r.querySelectorAll(`div > span.icon-pencil`).forEach(e=>void e.on(`click`,p)),r.querySelectorAll(`div > span.locks`).forEach(e=>void e.on(`click`,m)),r.querySelectorAll(`div > span.icon-trash-empty`).forEach(e=>void e.on(`click`,g)),applySorting(t(`routesHeader`))}function l(e){layerIsOn(`toggleRoutes`)||toggleRoutes();let t=+e.target.dataset.id;routes.select(`#route${t}`).attr(`stroke`,`red`).attr(`stroke-width`,2).attr(`stroke-dasharray`,`none`)}function u(e){let t=+e.target.dataset.id;routes.select(`#route${t}`).attr(`stroke`,null).attr(`stroke-width`,null).attr(`stroke-dasharray`,null)}function d(){let e=+this.parentNode.dataset.id,t=routes.select(`#route${e}`).node();highlightElement(t,3)}function f(){let n=`Id,Route,Group,Length
+`;t(`routesBody`).querySelectorAll(`:scope > div`).forEach(t=>{let r=t.dataset,i=`${e(+r.length*distanceScale)} ${distanceUnitInput.value}`;n+=`${[r.id,r.name,r.group,i].join(`,`)}\n`});let r=`${getFileName(`Routes`)}.csv`;downloadFile(n,r)}function p(){let e=`route${this.parentNode.dataset.id}`;r.RouteEditor.open(e)}function m(){let e=+this.parentNode.dataset.id,t=pack.routes.find(t=>t.i===e);t&&(t.lock=!t.lock,this.classList.contains(`icon-lock`)?(this.classList.remove(`icon-lock`),this.classList.add(`icon-lock-open`),this.classList.add(`inactive`)):(this.classList.remove(`icon-lock-open`),this.classList.add(`icon-lock`),this.classList.remove(`inactive`)))}function h(){let e=pack.routes.every(e=>e.lock);pack.routes.forEach(t=>{t.lock=!e}),c(),t(`routesLockAll`).className=e?`icon-lock`:`icon-lock-open`}function g(){let e=+this.parentNode.dataset.id;confirmationDialog({title:`Remove route`,message:`Are you sure you want to remove the route? <br>This action cannot be reverted`,confirm:`Remove`,onConfirm:()=>{let t=pack.routes.find(t=>t.i===e);Routes.remove(t),c()}})}function _(){let e=pack.routes.filter(e=>!e.lock);if(!e.length){pack.routes.length?tip(`All routes are locked. Unlock routes to remove them, or use Lock all to unlock first.`,!1,`error`):tip(`There are no routes to remove`,!1,`error`);return}let t=pack.routes.length-e.length;alertMessage.innerHTML=t>0?`Remove all <b>unlocked</b> routes (${e.length})? <b>${t}</b> locked route(s) will be kept. This cannot be undone.`:`Are you sure you want to remove all routes? This action can't be undone`,$(`#alert`).dialog({resizable:!1,title:t>0?`Remove unlocked routes`:`Remove all routes`,buttons:{Remove:function(){let e=pack.routes.filter(e=>!e.lock);if(!e.length){pack.routes.length?tip(`All routes are now locked; nothing was removed.`,!1,`error`):tip(`There are no routes to remove`,!1,`error`),$(this).dialog(`close`);return}for(let t of e)Routes.remove(t);pack.cells.routes=Routes.buildLinks(pack.routes),c(),$(this).dialog(`close`)},Cancel:function(){$(this).dialog(`close`)}}})}var v={open:a};export{v as RoutesOverview};

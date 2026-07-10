@@ -5,6 +5,7 @@
 [build.environment]
   NODE_VERSION = "20"
   VITE_APIURL = "https://epicenclaveapi.netlify.app/.netlify/functions/api"
+  VITE_AZGAAR_URL = "/Fantasy-Map-Generator/"
 
 [[redirects]]
   from = "/*"

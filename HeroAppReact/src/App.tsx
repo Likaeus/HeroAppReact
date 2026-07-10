@@ -5,6 +5,8 @@ import NavBar from "./Components/NavBarComponent";
 import { useAuth } from "./Context/useAuth";
 import AuthPage from "./Pages/AuthPage";
 import CarouselPage from "./Pages/CarouselPage";
+import CampaignCreationPage from "./Pages/CampaignCreationPage";
+import CampaignsPage from "./Pages/CampaignsPage";
 import CharacterCreationPage from "./Pages/CharacterCreationPage";
 import CharacterListPage from "./Pages/CharacterListPage";
 import GalleryPage from "./Pages/GalleryPage";
@@ -23,6 +25,11 @@ function App() {
             <Route path="/" element={<CarouselPage />} />
             <Route path="/characters" element={<CharacterListPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/campaigns" element={<CampaignsPage />} />
+            <Route path="/campaigns/create" element={
+              isLoading ? <div className="page-loader">Abriendo el atlas…</div> :
+              isAuthenticated ? <CampaignCreationPage /> : <Navigate to="/auth" replace state={{ from: "/campaigns/create" }} />
+            } />
             <Route path="/list" element={<Navigate to="/characters" replace />} />
             <Route path="/auth" element={isAuthenticated ? <Navigate to="/" replace /> : <AuthPage />} />
             <Route path="/create" element={

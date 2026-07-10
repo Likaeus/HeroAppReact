@@ -1,0 +1,1 @@
+var e=e=>{let t=document.getElementById(e);return t||ERROR&&console.error(`Element with id "${e}" not found.`),t},t=e=>document.getElementById(e),n=e=>{let t;return e.parentNode?t=e.parentNode:e.host?t=e.host:e.defaultView&&(t=e.defaultView),t===void 0?[e]:[e].concat(n(t))},r=(e,t=1)=>{for(;document.getElementById(e+t);)t++;return e+t};export{r as i,t as n,n as r,e as t};
