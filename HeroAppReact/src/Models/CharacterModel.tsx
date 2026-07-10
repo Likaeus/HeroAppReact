@@ -7,6 +7,7 @@ interface Character {
     weakness: string;
   };
   imageUrl: string | null;
+  isOwnedByCurrentUser?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -4,12 +4,9 @@ import { useNavigate } from "react-router-dom";
 import HeroService from "../Services/heroService";
 import { getApiErrorMessage } from "../Services/apiClient";
 import "../Styles/CharacterCreationPage.css";
-import { useAuth } from "../Context/useAuth";
-import { rememberCreation } from "../Services/creationService";
 
 const CharacterCreationPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [form, setForm] = useState({ name: "", description: "", powers: "", weakness: "" });
   const [image, setImage] = useState<File>();
   const [preview, setPreview] = useState<string>();
@@ -25,8 +22,7 @@ const CharacterCreationPage = () => {
   const submit = async (event: FormEvent) => {
     event.preventDefault(); setSubmitting(true); setError(null);
     try {
-      const response = await HeroService.create({ name: form.name, description: form.description, details: { powers: form.powers, weakness: form.weakness } }, image);
-      if (user) rememberCreation(user.id, response.data.data.id);
+      await HeroService.create({ name: form.name, description: form.description, details: { powers: form.powers, weakness: form.weakness } }, image);
       navigate("/my-creations", { state: { created: form.name } });
     } catch (requestError) {
       setError(getApiErrorMessage(requestError, "No se pudo publicar el personaje."));

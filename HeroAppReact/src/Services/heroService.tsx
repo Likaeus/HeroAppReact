@@ -24,6 +24,8 @@ interface HeroResponse {
 
 const list = (params: HeroListParams = {}) =>
   apiClient.get<HeroListResponse>("/heroes", { params });
+const listMine = (params: HeroListParams = {}) =>
+  apiClient.get<HeroListResponse>("/heroes/mine", { params });
 const getById = (id: string) => apiClient.get<HeroResponse>(`/heroes/${id}`);
 
 const create = (payload: HeroPayload, image?: File) => {
@@ -51,4 +53,4 @@ const getImage = (id: string) =>
 export const getHeroImageUrl = (hero: Pick<Character, "imageUrl">) =>
   hero.imageUrl ? `${apiOrigin}${hero.imageUrl}` : null;
 
-export default { list, getById, create, update, updateImage, remove, getImage };
+export default { list, listMine, getById, create, update, updateImage, remove, getImage };

@@ -1,30 +1,31 @@
-# React + TypeScript + Vite
+# Epic Enclave Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de Epic Enclave construido con React, TypeScript y Vite.
 
-Currently, two official plugins are available:
+## Desarrollo local
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Ejecuta `npm install`.
+2. Copia `.env.example` como `.env`.
+3. Ajusta `VITE_APIURL` si la API no se ejecuta en `http://localhost:8000`.
+4. Ejecuta `npm run dev`.
 
-## Expanding the ESLint configuration
+## Publicación en Netlify
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+El repositorio incluye `netlify.toml` con la configuración necesaria:
 
-- Configure the top-level `parserOptions` property like this:
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Node.js: 20
+- Fallback SPA para React Router
+- `VITE_APIURL` apuntando a la función publicada de Epic Enclave API
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+En Netlify, importa el repositorio y configura **Base directory** como `HeroAppReact`, ya que la aplicación está dentro de esa carpeta del repositorio. Netlify leerá desde ahí el `netlify.toml` incluido. Si cambia el dominio del backend, actualiza `VITE_APIURL` en las variables del sitio o en `netlify.toml` y vuelve a desplegar.
+
+El backend debe configurar `CORS_ORIGIN` con el dominio definitivo del frontend, por ejemplo `https://epic-enclave.netlify.app`.
+
+## Verificación
+
+```bash
+npm run lint
+npm run build
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
