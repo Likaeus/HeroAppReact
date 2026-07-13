@@ -11,3 +11,4 @@
 @keyframes shimmer { to { background-position: -200% 0; } }
 @media (max-width: 850px) { .featured-section { padding-top: 70px; }.character-carousel { min-height: 520px; }.carousel-card { height: 500px; }.card-copy { padding: 22px; } }
 @media (max-width: 600px) { .section-heading { align-items: flex-start; flex-direction: column; }.character-carousel { display: block; min-height: 520px; }.carousel-card { display: none; height: 510px; }.carousel-card.active { display: block; }.card-art { height: 62%; }.carousel-skeleton { display: block; }.carousel-skeleton span { display: none; }.carousel-skeleton span:first-child { display: block; height: 510px; }.archive-link { margin-left: 0; } }
+.card-art img { object-fit: contain; object-position: center; }

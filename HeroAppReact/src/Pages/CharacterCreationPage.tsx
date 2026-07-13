@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import HeroService from "../Services/heroService";
 import { getApiErrorMessage } from "../Services/apiClient";
 import "../Styles/CharacterCreationPage.css";
+import ImmersiveSelect from "../Components/ImmersiveSelect";
 
 const CharacterCreationPage = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", description: "", powers: "", weakness: "" });
+  const [form, setForm] = useState({ name: "", description: "", powers: "", weakness: "", visibility: "public" as "public" | "private" });
   const [image, setImage] = useState<File>();
   const [preview, setPreview] = useState<string>();
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +23,7 @@ const CharacterCreationPage = () => {
   const submit = async (event: FormEvent) => {
     event.preventDefault(); setSubmitting(true); setError(null);
     try {
-      await HeroService.create({ name: form.name, description: form.description, details: { powers: form.powers, weakness: form.weakness } }, image);
+      await HeroService.create({ name: form.name, description: form.description, details: { powers: form.powers, weakness: form.weakness }, visibility: form.visibility }, image);
       navigate("/my-creations", { state: { created: form.name } });
     } catch (requestError) {
       setError(getApiErrorMessage(requestError, "No se pudo publicar el personaje."));
@@ -42,6 +43,7 @@ const CharacterCreationPage = () => {
             <label>Poderes o talentos<textarea {...field("powers")} rows={4} placeholder="Magia, habilidades, dones…" required /></label>
             <label>Debilidad o conflicto<textarea {...field("weakness")} rows={4} placeholder="Todo héroe tiene una grieta…" required /></label>
           </div>
+          <label>Visibilidad<ImmersiveSelect name="visibility" value={form.visibility} onChange={(_, value) => setForm({ ...form, visibility: value as "public" | "private" })} options={[{ value: "public", label: "Público", description: "Visible en el archivo y la galería" }, { value: "private", label: "Privado", description: "Solo aparecerá en Mis creaciones" }]} /></label>
           {error && <p className="form-error" role="alert">{error}</p>}
           <button className="primary-button" disabled={submitting}>{submitting ? "Publicando…" : "Publicar personaje"}</button>
         </div>

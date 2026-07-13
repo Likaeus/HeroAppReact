@@ -14,6 +14,7 @@ export interface CampaignMap {
 export default interface Campaign {
   id: string;
   name: string;
+  creatorName: string;
   slug: string;
   shortDescription: string;
   description: string;

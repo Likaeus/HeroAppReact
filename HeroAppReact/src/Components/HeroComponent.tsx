@@ -5,12 +5,14 @@ import HeroService from "../Services/heroService";
 import Character from "../Models/CharacterModel";
 import HeroImage from "./HeroImage";
 import "../Styles/CharacterCarousel.css";
+import CharacterModal from "./CharacterModal";
 
 const CharacterCarousel = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [windowStart, setWindowStart] = useState(0);
   const [error, setError] = useState(false);
+  const [openCharacter, setOpenCharacter] = useState<Character | null>(null);
 
   useEffect(() => {
     HeroService.list({ limit: 6 })
@@ -41,7 +43,7 @@ const CharacterCarousel = () => {
   };
 
   return (
-    <section className="featured-section page">
+    <section className="featured-section page" id="personajes-destacados">
       <header className="section-heading">
         <div><span className="eyebrow">Recién llegados al archivo</span><h2>Ideas que piden una historia</h2></div>
         <div className="carousel-controls"><button onClick={previous} disabled={!characters.length} aria-label="Anterior">←</button><button onClick={next} disabled={!characters.length} aria-label="Siguiente">→</button></div>
@@ -68,7 +70,7 @@ const CharacterCarousel = () => {
                     opacity: { duration: 0.25 },
                     scale: { duration: 0.35 },
                   }}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => isActive ? setOpenCharacter(character) : setActiveIndex(index)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
@@ -80,7 +82,7 @@ const CharacterCarousel = () => {
                   aria-pressed={isActive}
                 >
                   <div className="card-art"><HeroImage hero={character} alt={`Retrato de ${character.name}`} fallback={<div className="portrait-placeholder">✦</div>} /><span className="card-number">0{index + 1}</span></div>
-                  <div className="card-copy"><span className="card-kicker">Concepto de personaje</span><h3>{character.name}</h3><p>{character.description}</p><div className="trait"><small>DON</small><span>{character.details.powers}</span></div></div>
+                  <div className="card-copy"><span className="card-kicker">Por {character.creatorName}</span><h3>{character.name}</h3><p>{character.description}</p><div className="trait"><small>DON</small><span>{character.details.powers}</span></div></div>
                 </m.article>
               );
             })}
@@ -88,6 +90,7 @@ const CharacterCarousel = () => {
         </div>
       )}
       <Link to="/characters" className="archive-link">Ver todo el archivo <span>→</span></Link>
+      {openCharacter && <CharacterModal character={openCharacter} onClose={() => setOpenCharacter(null)} />}
     </section>
   );
 };

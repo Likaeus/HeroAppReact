@@ -5,6 +5,7 @@ export interface HeroPayload {
   name: string;
   description: string;
   details: { powers: string; weakness: string };
+  visibility: "public" | "private";
 }
 
 export interface HeroListParams {
@@ -35,6 +36,7 @@ const create = (payload: HeroPayload, image?: File) => {
   form.append("description", payload.description);
   form.append("powers", payload.details.powers);
   form.append("weakness", payload.details.weakness);
+  form.append("visibility", payload.visibility);
   form.append("image", image);
   return apiClient.post<HeroResponse>("/heroes", form);
 };
@@ -47,8 +49,8 @@ const updateImage = (id: string, image: File) => {
   return apiClient.put<HeroResponse>(`/heroes/${id}/image`, form);
 };
 const remove = (id: string) => apiClient.delete(`/heroes/${id}`);
-const getImage = (id: string) =>
-  apiClient.get<Blob>(`/heroes/${id}/image`, { responseType: "blob" });
+const getImage = (hero: Pick<Character, "id" | "imageUrl">) =>
+  apiClient.get<Blob>(hero.imageUrl?.replace(/^\/api\/v1/, "") || `/heroes/${hero.id}/image`, { responseType: "blob" });
 
 export const getHeroImageUrl = (hero: Pick<Character, "imageUrl">) =>
   hero.imageUrl ? `${apiOrigin}${hero.imageUrl}` : null;

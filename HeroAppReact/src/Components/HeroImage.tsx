@@ -9,20 +9,21 @@ interface HeroImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src"
 
 const HeroImage = ({ hero, fallback = null, ...props }: HeroImageProps) => {
   const [source, setSource] = useState<string>();
+  const { id, imageUrl } = hero;
 
   useEffect(() => {
     let objectUrl: string | undefined;
     let active = true;
-    if (!hero.imageUrl) { setSource(undefined); return; }
+    if (!imageUrl) { setSource(undefined); return; }
 
-    HeroService.getImage(hero.id).then(({ data }) => {
+    HeroService.getImage({ id, imageUrl }).then(({ data }) => {
       if (!active) return;
       objectUrl = URL.createObjectURL(data);
       setSource(objectUrl);
     }).catch(() => { if (active) setSource(undefined); });
 
     return () => { active = false; if (objectUrl) URL.revokeObjectURL(objectUrl); };
-  }, [hero.id, hero.imageUrl]);
+  }, [id, imageUrl]);
 
   return source ? <img src={source} {...props} /> : <>{fallback}</>;
 };

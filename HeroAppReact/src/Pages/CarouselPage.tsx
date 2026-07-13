@@ -1,10 +1,11 @@
 import { motion as m } from "framer-motion";
 import { Link } from "react-router-dom";
 import HeroComponent from "../Components/HeroComponent";
+import PageTrail from "../Components/PageTrail";
 
 const CarouselPage = () => (
   <m.div className="home-page" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-    <section className="hero-intro page">
+    <PageTrail /><section className="hero-intro page" id="inicio">
       <div className="hero-copy">
         <span className="eyebrow">El archivo de los mundos posibles</span>
         <h1>Tu próxima leyenda empieza <em>con una chispa.</em></h1>
@@ -15,7 +16,7 @@ const CarouselPage = () => (
     </section>
     <section className="manifesto-strip"><span>Personajes originales</span><i>✦</i><span>Sistemas abiertos</span><i>✦</i><span>Historias compartidas</span></section>
     <HeroComponent />
-    <section className="future-callout page"><span className="eyebrow">El enclave está creciendo</span><h2>Hoy, personajes.<br />Mañana, mundos enteros.</h2><p>Estamos preparando espacios para compartir campañas, escenarios, facciones y herramientas para tu mesa.</p><span className="coming-pill">Próximamente · Archivo de campañas</span></section>
+    <section className="future-callout page" id="campanas-abiertas"><span className="eyebrow">El atlas ya está abierto</span><h2>Personajes y mundos.<br />Una historia por comenzar.</h2><p>Explora campañas completas, descubre escenarios y crea un mapa vivo para tu próxima mesa.</p><Link to="/campaigns" className="primary-button">Explorar campañas →</Link></section>
   </m.div>
 );
 

@@ -3,6 +3,7 @@ import { motion as m } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import HeroImage from "../Components/HeroImage";
+import CharacterModal from "../Components/CharacterModal";
 import Character from "../Models/CharacterModel";
 import HeroService from "../Services/heroService";
 
@@ -14,6 +15,7 @@ const GalleryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [openCharacter, setOpenCharacter] = useState<Character | null>(null);
 
   const track = useRef<HTMLDivElement>(null);
 
@@ -354,6 +356,7 @@ const GalleryPage = () => {
             <article
               className="gallery-slide"
               key={`${groupIndex}-${character.id}-${characterIndex}`}
+              onClick={() => isMiddleGroup && setOpenCharacter(character)}
             >
               <HeroImage
                 hero={character}
@@ -457,6 +460,7 @@ const GalleryPage = () => {
           Todavía no hay retratos en el archivo.
         </div>
       )}
+      {openCharacter && <CharacterModal character={openCharacter} onClose={() => setOpenCharacter(null)} />}
     </m.section>
   );
 };

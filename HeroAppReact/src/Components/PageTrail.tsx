@@ -1,0 +1,4 @@
+import { useEffect, useState } from "react";
+const items = [{ id: "inicio", label: "Inicio" }, { id: "personajes-destacados", label: "Personajes" }, { id: "campanas-abiertas", label: "Campañas" }];
+const PageTrail = () => { const [active, setActive] = useState("inicio"); useEffect(() => { const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && setActive(entry.target.id)), { rootMargin: "-35% 0px -55%" }); items.forEach(({ id }) => { const section = document.getElementById(id); if (section) observer.observe(section); }); return () => observer.disconnect(); }, []); return <nav className="page-trail" aria-label="Secciones de Descubrir">{items.map((item) => <a key={item.id} href={`#${item.id}`} className={active === item.id ? "active" : ""}><i /><span>{item.label}</span></a>)}</nav>; };
+export default PageTrail;

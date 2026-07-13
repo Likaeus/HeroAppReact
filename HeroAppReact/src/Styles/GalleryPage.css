@@ -1,6 +1,7 @@
 .gallery-page {
   padding-top: 145px;
 }
+.gallery-slide { cursor: pointer; }.gallery-slide > img, .gallery-slide img { object-fit: contain; object-position: center; }.gallery-overlay p { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
 
 .gallery-header {
   display: grid;
